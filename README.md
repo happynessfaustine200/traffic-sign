@@ -39,3 +39,4 @@ A Django app for training on traffic-sign images and detecting sign meaning from
 2. In PythonAnywhere Web tab, add static mapping:
    - URL: `/static/`
    - Directory: `/home/<your-username>/HappyProject/staticfiles`
+3. Reload your PythonAnywhere web app after `collectstatic`.
