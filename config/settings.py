@@ -18,7 +18,7 @@ SECRET_KEY = "django-insecure-u*n34z83(cpqa7#%bg73y27f8$vg_kg6u3#b@^x+tl#*9d8ry2
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["trafficrecognition.pythonanywhere.com"]
+ALLOWED_HOSTS = ["trafficrecognition.pythonanywhere.com", "localhost", "127.0.0.1"]
 
 INSTALLED_APPS = [
     "django.contrib.admin",

@@ -200,6 +200,29 @@ h1 {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.secondary-btn,
+.danger-btn {
+  border: 0;
+  border-radius: 12px;
+  padding: 0.6rem 0.9rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+}
+
+.secondary-btn {
+  background: linear-gradient(120deg, #3f5ed8, #4f89f3);
+}
+
+.danger-btn {
+  background: linear-gradient(120deg, #e4547c, #bb2f59);
+}
+
+.small-btn {
+  padding: 0.45rem 0.75rem;
+  font-size: 0.8rem;
+}
+
 .primary-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(78, 113, 255, 0.36);
@@ -277,6 +300,34 @@ h1 {
   padding: 0.7rem 0;
   display: grid;
   gap: 0.25rem;
+}
+
+.class-manage-form label {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+  margin: 0.35rem 0 0.2rem;
+  display: block;
+}
+
+.class-manage-form input,
+.class-manage-form textarea {
+  width: 100%;
+  border: 1px solid rgba(149, 173, 255, 0.45);
+  background: rgba(12, 17, 44, 0.72);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 0.55rem 0.65rem;
+}
+
+.row-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.65rem;
+}
+
+.inline-form {
+  margin-top: 0.5rem;
 }
 
 .class-list li:last-child {

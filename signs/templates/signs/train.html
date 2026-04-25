@@ -21,8 +21,24 @@
       <ul class="class-list">
         {% for c in classes %}
           <li>
-            <strong>{{ c.name }}</strong>
-            <span>{{ c.meaning }}</span>
+            <form method="post" class="class-manage-form">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="update_class">
+              <input type="hidden" name="class_id" value="{{ c.id }}">
+              <label>Name</label>
+              <input type="text" name="class_name" value="{{ c.name }}" required>
+              <label>Meaning</label>
+              <textarea name="class_meaning" rows="2" required>{{ c.meaning }}</textarea>
+              <div class="row-actions">
+                <button type="submit" class="secondary-btn">Update</button>
+              </div>
+            </form>
+            <form method="post" class="inline-form">
+              {% csrf_token %}
+              <input type="hidden" name="action" value="delete_class">
+              <input type="hidden" name="class_id" value="{{ c.id }}">
+              <button type="submit" class="danger-btn">Delete class</button>
+            </form>
           </li>
         {% endfor %}
       </ul>
@@ -39,6 +55,12 @@
       <figure class="glass-item">
         <img src="{{ sample.image.url }}" alt="{{ sample.sign_class.name }}">
         <figcaption>{{ sample.sign_class.name }}</figcaption>
+        <form method="post" class="inline-form">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="delete_training_image">
+          <input type="hidden" name="sample_id" value="{{ sample.id }}">
+          <button type="submit" class="danger-btn small-btn">Delete</button>
+        </form>
       </figure>
     {% empty %}
       <p class="empty-state">No training images uploaded yet.</p>

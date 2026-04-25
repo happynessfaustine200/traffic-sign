@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import DetectionUploadForm, TrainingUploadForm
 from .models import DetectionHistory, TrafficSignClass, TrainingImage
@@ -12,6 +12,31 @@ def home(request):
 
 def train_view(request):
     if request.method == "POST":
+        action = request.POST.get("action")
+        if action == "update_class":
+            sign_class = get_object_or_404(TrafficSignClass, pk=request.POST.get("class_id"))
+            sign_class.name = (request.POST.get("class_name") or "").strip() or sign_class.name
+            sign_class.meaning = (request.POST.get("class_meaning") or "").strip()
+            sign_class.save(update_fields=["name", "meaning"])
+            messages.success(request, f"Updated class: {sign_class.name}.")
+            return redirect("train")
+
+        if action == "delete_class":
+            sign_class = get_object_or_404(TrafficSignClass, pk=request.POST.get("class_id"))
+            class_name = sign_class.name
+            for sample in sign_class.training_images.all():
+                sample.image.delete(save=False)
+            sign_class.delete()
+            messages.success(request, f"Deleted class: {class_name}.")
+            return redirect("train")
+
+        if action == "delete_training_image":
+            sample = get_object_or_404(TrainingImage, pk=request.POST.get("sample_id"))
+            sample.image.delete(save=False)
+            sample.delete()
+            messages.success(request, "Training image deleted.")
+            return redirect("train")
+
         form = TrainingUploadForm(request.POST, request.FILES)
         if form.is_valid():
             sign_class = form.cleaned_data["sign_class"]
@@ -61,6 +86,21 @@ def detect_view(request):
     history_entry = None
 
     if request.method == "POST":
+        action = request.POST.get("action")
+        if action == "delete_detection":
+            detection = get_object_or_404(DetectionHistory, pk=request.POST.get("detection_id"))
+            detection.image.delete(save=False)
+            detection.delete()
+            messages.success(request, "Detection record deleted.")
+            return redirect("detect")
+
+        if action == "clear_detection_history":
+            for detection in DetectionHistory.objects.all():
+                detection.image.delete(save=False)
+            DetectionHistory.objects.all().delete()
+            messages.success(request, "All detection uploads were cleared.")
+            return redirect("detect")
+
         form = DetectionUploadForm(request.POST, request.FILES)
         if form.is_valid():
             image_file = form.cleaned_data["image"]

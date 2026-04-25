@@ -8,10 +8,13 @@
       <span class="scan-pill">Live</span>
     </div>
     <p class="muted">Upload a sign image and we will compare it against your trained dataset.</p>
-    <form method="post" enctype="multipart/form-data" class="stack custom-form" data-loading-text="Detecting sign...">
+    <form method="post" enctype="multipart/form-data" class="stack custom-form" data-loading-text="Detecting sign..." id="detect-form">
       {% csrf_token %}
       {{ form.as_p }}
-      <button type="submit" class="primary-btn">Detect Sign</button>
+      <div class="row-actions">
+        <button type="submit" class="primary-btn">Detect Sign</button>
+        <button type="button" class="secondary-btn" id="clear-detect-upload">Clear Upload</button>
+      </div>
     </form>
   </article>
 
@@ -35,7 +38,16 @@
 </section>
 
 <section class="card lift">
-  <h2>Recent Detections</h2>
+  <div class="card-head">
+    <h2>Recent Detections</h2>
+    {% if history %}
+      <form method="post" class="inline-form">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="clear_detection_history">
+        <button type="submit" class="danger-btn small-btn">Clear All</button>
+      </form>
+    {% endif %}
+  </div>
   {% if history %}
     <div class="gallery">
       {% for item in history %}
@@ -48,6 +60,12 @@
               Unknown sign
             {% endif %}
           </figcaption>
+          <form method="post" class="inline-form">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="delete_detection">
+            <input type="hidden" name="detection_id" value="{{ item.id }}">
+            <button type="submit" class="danger-btn small-btn">Delete</button>
+          </form>
         </figure>
       {% endfor %}
     </div>
@@ -55,4 +73,15 @@
     <p class="empty-state">No detections yet.</p>
   {% endif %}
 </section>
+
+<script>
+  (function () {
+    var clearBtn = document.getElementById("clear-detect-upload");
+    if (!clearBtn) return;
+    clearBtn.addEventListener("click", function () {
+      var input = document.querySelector("#detect-form input[type='file']");
+      if (input) input.value = "";
+    });
+  })();
+</script>
 {% endblock %}
