@@ -33,3 +33,9 @@ A Django app for training on traffic-sign images and detecting sign meaning from
 ## Notes
 - This is a lightweight baseline recognizer. Accuracy improves as you upload more class examples.
 - Future upgrades can replace the matcher with scikit-learn or deep learning models.
+
+## PythonAnywhere Static Setup
+1. Run: `python manage.py collectstatic --noinput`
+2. In PythonAnywhere Web tab, add static mapping:
+   - URL: `/static/`
+   - Directory: `/home/<your-username>/HappyProject/staticfiles`
