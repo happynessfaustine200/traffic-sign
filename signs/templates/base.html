@@ -5,14 +5,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Traffic Sign AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/site.css' %}">
 </head>
 <body>
+  <div class="page-glow page-glow-left"></div>
+  <div class="page-glow page-glow-right"></div>
+
   <header class="site-header">
-    <div class="container">
-      <h1>Traffic Sign Recognition</h1>
-      <p>Train with your own photos and detect sign meaning instantly.</p>
-      <nav>
+    <div class="container hero-shell">
+      <div>
+        <span class="badge">Smart Recognition Studio</span>
+        <h1>Traffic Sign Recognition</h1>
+        <p>Upload, train, and detect traffic signs with a clean workflow built for speed.</p>
+      </div>
+      <nav class="top-nav">
         <a href="{% url 'train' %}">Training</a>
         <a href="{% url 'detect' %}">Detection</a>
         <a href="/admin/">Admin</a>
@@ -20,7 +29,7 @@
     </div>
   </header>
 
-  <main class="container">
+  <main class="container content-shell">
     {% if messages %}
       {% for message in messages %}
         <div class="notice">{{ message }}</div>
@@ -29,5 +38,19 @@
 
     {% block content %}{% endblock %}
   </main>
+
+  <script>
+    document.querySelectorAll('form[data-loading-text]').forEach(function (form) {
+      form.addEventListener('submit', function () {
+        var button = form.querySelector('button[type="submit"]');
+        if (!button) return;
+
+        button.disabled = true;
+        button.classList.add('is-loading');
+        button.dataset.originalText = button.innerHTML;
+        button.innerHTML = '<span class="spinner"></span>' + form.dataset.loadingText;
+      });
+    });
+  </script>
 </body>
 </html>

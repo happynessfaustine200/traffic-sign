@@ -2,17 +2,20 @@
 
 {% block content %}
 <section class="grid two">
-  <article class="card">
-    <h2>Upload Training Image</h2>
-    <p>Create a class or select an existing one, then upload a sign photo.</p>
-    <form method="post" enctype="multipart/form-data" class="stack">
+  <article class="card lift">
+    <div class="card-head">
+      <h2>Training Upload</h2>
+      <span class="pulse-dot"></span>
+    </div>
+    <p class="muted">Create a new class or pick an existing one, then upload a training image.</p>
+    <form method="post" enctype="multipart/form-data" class="stack custom-form" data-loading-text="Training in progress...">
       {% csrf_token %}
       {{ form.as_p }}
-      <button type="submit">Save and Train</button>
+      <button type="submit" class="primary-btn">Save and Train</button>
     </form>
   </article>
 
-  <article class="card">
+  <article class="card lift">
     <h2>Known Sign Classes</h2>
     {% if classes %}
       <ul class="class-list">
@@ -24,21 +27,21 @@
         {% endfor %}
       </ul>
     {% else %}
-      <p>No classes yet. Add your first sign class now.</p>
+      <p class="empty-state">No classes yet. Add your first sign class now.</p>
     {% endif %}
   </article>
 </section>
 
-<section class="card">
+<section class="card lift">
   <h2>Recent Training Samples</h2>
   <div class="gallery">
     {% for sample in recent_training %}
-      <figure>
+      <figure class="glass-item">
         <img src="{{ sample.image.url }}" alt="{{ sample.sign_class.name }}">
         <figcaption>{{ sample.sign_class.name }}</figcaption>
       </figure>
     {% empty %}
-      <p>No training images uploaded yet.</p>
+      <p class="empty-state">No training images uploaded yet.</p>
     {% endfor %}
   </div>
 </section>

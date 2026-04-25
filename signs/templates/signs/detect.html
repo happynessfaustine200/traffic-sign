@@ -2,39 +2,44 @@
 
 {% block content %}
 <section class="grid two">
-  <article class="card">
-    <h2>Upload Image to Detect</h2>
-    <p>Upload any traffic sign photo and we will predict its meaning.</p>
-    <form method="post" enctype="multipart/form-data" class="stack">
+  <article class="card lift">
+    <div class="card-head">
+      <h2>Detect Sign Meaning</h2>
+      <span class="scan-pill">Live</span>
+    </div>
+    <p class="muted">Upload a sign image and we will compare it against your trained dataset.</p>
+    <form method="post" enctype="multipart/form-data" class="stack custom-form" data-loading-text="Detecting sign...">
       {% csrf_token %}
       {{ form.as_p }}
-      <button type="submit">Detect Sign Meaning</button>
+      <button type="submit" class="primary-btn">Detect Sign</button>
     </form>
   </article>
 
-  <article class="card">
+  <article class="card lift">
     <h2>Prediction Result</h2>
     {% if prediction and history_entry %}
       <img class="result-image" src="{{ history_entry.image.url }}" alt="Uploaded sign">
       {% if prediction.sign_class %}
-        <p><strong>Sign:</strong> {{ prediction.sign_class.name }}</p>
-        <p><strong>Meaning:</strong> {{ prediction.sign_class.meaning }}</p>
-        <p><strong>Confidence:</strong> {{ prediction.confidence|floatformat:3 }}</p>
+        <div class="result-lines">
+          <p><strong>Sign:</strong> {{ prediction.sign_class.name }}</p>
+          <p><strong>Meaning:</strong> {{ prediction.sign_class.meaning }}</p>
+          <p><strong>Confidence:</strong> {{ prediction.confidence|floatformat:3 }}</p>
+        </div>
       {% else %}
-        <p>No matching trained sign was found yet.</p>
+        <p class="empty-state">No matching trained sign was found yet.</p>
       {% endif %}
     {% else %}
-      <p>Run a detection to see results here.</p>
+      <p class="empty-state">Run a detection to see results here.</p>
     {% endif %}
   </article>
 </section>
 
-<section class="card">
+<section class="card lift">
   <h2>Recent Detections</h2>
   {% if history %}
     <div class="gallery">
       {% for item in history %}
-        <figure>
+        <figure class="glass-item">
           <img src="{{ item.image.url }}" alt="Detected sign">
           <figcaption>
             {% if item.predicted_sign %}
@@ -47,7 +52,7 @@
       {% endfor %}
     </div>
   {% else %}
-    <p>No detections yet.</p>
+    <p class="empty-state">No detections yet.</p>
   {% endif %}
 </section>
 {% endblock %}
