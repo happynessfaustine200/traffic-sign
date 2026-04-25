@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="grid two">
+  <article class="card">
+    <h2>Upload Image to Detect</h2>
+    <p>Upload any traffic sign photo and we will predict its meaning.</p>
+    <form method="post" enctype="multipart/form-data" class="stack">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Detect Sign Meaning</button>
+    </form>
+  </article>
+
+  <article class="card">
+    <h2>Prediction Result</h2>
+    {% if prediction and history_entry %}
+      <img class="result-image" src="{{ history_entry.image.url }}" alt="Uploaded sign">
+      {% if prediction.sign_class %}
+        <p><strong>Sign:</strong> {{ prediction.sign_class.name }}</p>
+        <p><strong>Meaning:</strong> {{ prediction.sign_class.meaning }}</p>
+        <p><strong>Confidence:</strong> {{ prediction.confidence|floatformat:3 }}</p>
+      {% else %}
+        <p>No matching trained sign was found yet.</p>
+      {% endif %}
+    {% else %}
+      <p>Run a detection to see results here.</p>
+    {% endif %}
+  </article>
+</section>
+
+<section class="card">
+  <h2>Recent Detections</h2>
+  {% if history %}
+    <div class="gallery">
+      {% for item in history %}
+        <figure>
+          <img src="{{ item.image.url }}" alt="Detected sign">
+          <figcaption>
+            {% if item.predicted_sign %}
+              {{ item.predicted_sign.name }} ({{ item.confidence|floatformat:3 }})
+            {% else %}
+              Unknown sign
+            {% endif %}
+          </figcaption>
+        </figure>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No detections yet.</p>
+  {% endif %}
+</section>
+{% endblock %}
