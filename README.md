@@ -20,6 +20,7 @@ A Django app for training on traffic-sign images and detecting sign meaning from
    - `python manage.py createsuperuser`
 5. Run server:
    - `python manage.py runserver`
+   - `you run server by typing python manage.py runserver`
 6. Open:
    - `http://127.0.0.1:8000/train/` (training)
    - `http://127.0.0.1:8000/detect/` (detection)
