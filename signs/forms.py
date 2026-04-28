@@ -34,3 +34,4 @@ class TrainingUploadForm(forms.Form):
 
 class DetectionUploadForm(forms.Form):
     image = forms.ImageField()
+    
